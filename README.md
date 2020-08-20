@@ -13,7 +13,7 @@ DonkeyCarのインストール
 
 ## ファイルコピー
 ```
-git clone
+git clone https://github.com/FaBoPlatform/ip_address_display
 mkdir ~/fabo/bin
 cp oled_ip* ~/fabo/bin
 cp oled.py ~/projects/donkeycar/donkeycar/parts/
