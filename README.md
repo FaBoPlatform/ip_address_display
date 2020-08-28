@@ -20,6 +20,23 @@ cp oled_ip* ~/fabo/bin
 cp oled.py ~/projects/donkeycar/donkeycar/parts/
 ```
 
+## /etc/rc.local 編集
+`exit 0`の前にIPアドレス表示スクリプトの実行を追加します。
+```
+sudo vi /etc/rc.local
+
+```
+before:
+```
+exit 0
+```
+after:
+```
+/home/$(getent passwd 1000 | cut -d: -f1)/fabo/bin/oled_ip.sh
+
+exit 0
+```
+
 ## rc.local有効化
 ```
 sudo systemctl status rc.local
@@ -33,4 +50,3 @@ sudo systemctl status rc.local
 ```
 sudo reboot
 ```
-
