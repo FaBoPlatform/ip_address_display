@@ -126,9 +126,14 @@ def main():
         disp.image(image)
         disp.display()
         if (eth0 == 'None' or wlan0 == 'None') and count < 10:
+            # network searching
             time.sleep(1)
             count += 1
+        elif (eth0 != 'None' or wlan0 != 'None'):
+            # network is available
+            time.sleep(1)
         else:
+            # no network
             break
 
 if __name__ == "__main__":
