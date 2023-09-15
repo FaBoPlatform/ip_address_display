@@ -117,23 +117,28 @@ def main():
         # Write two lines of text.
         eth0 = str(get_ip_address('eth0'))
         wlan0 = str(get_ip_address('wlan0'))
+        usb0 = str(get_ip_address('usb0'))
         draw.text((x, top),       "eth0:" + eth0,   font=font, fill=255)
         draw.text((x, top+8),     "wlan0:" + wlan0, font=font, fill=255)
-        draw.text((x, top+16),    str(MemUsage.decode('utf-8')),  font=font, fill=255)
-        draw.text((x, top+25),    str(Disk.decode('utf-8')),  font=font, fill=255)
+        draw.text((x, top+16),     "usb0:" + usb0, font=font, fill=255)
+        draw.text((x, top+25),    str(CPU.decode('utf-8')),  font=font, fill=255)
+        #draw.text((x, top+16),    str(MemUsage.decode('utf-8')),  font=font, fill=255)
+        #draw.text((x, top+25),    str(Disk.decode('utf-8')),  font=font, fill=255)
 
         # Display image.
         disp.image(image)
         disp.display()
-        if (eth0 == 'None' or wlan0 == 'None') and count < 10:
+        if (eth0 == 'None' or wlan0 == 'None' or usb0 == 'None') and count < 10:
             # network searching
             time.sleep(1)
             count += 1
-        elif (eth0 != 'None' or wlan0 != 'None'):
+        elif (eth0 != 'None' or wlan0 != 'None' or usb0 != 'None'):
             # network is available
             time.sleep(1)
+            count = 0
         else:
             # no network
+            time.sleep(1)
             break
 
 if __name__ == "__main__":
@@ -149,3 +154,4 @@ if __name__ == "__main__":
     except:
         # no oled
         pass
+
