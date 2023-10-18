@@ -117,7 +117,6 @@ def main():
         eth0 = str(get_ip_address('eth0'))
         wlan0 = str(get_ip_address('wlan0'))
         l4tbr0 = str(get_ip_address('l4tbr0'))
-        print(f"{eth0}, {wlan0}, {l4tbr0}")
 
         draw.text((x, top),       "eth0:" + eth0,   font=font, fill=255)
         draw.text((x, top+8),     "wlan0:" + wlan0, font=font, fill=255)
