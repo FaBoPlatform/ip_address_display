@@ -29,6 +29,7 @@ from PIL import ImageFont
 
 import subprocess
 import os.path
+import traceback
 
 import Jetson.GPIO as GPIO
 
@@ -142,4 +143,6 @@ if __name__ == "__main__":
         main()
     except:
         # no oled
+        err_info = traceback.format_exc()
+        print(err_info)
         pass
