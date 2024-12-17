@@ -37,9 +37,14 @@ def get_ip_address(interface):
     elif interface_state == 'down':
         return None
 
-    cmd = "ifconfig %s | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'" % interface
-    return subprocess.check_output(cmd, shell=True).decode('ascii')[:-1]
-
+    # ipコマンド版
+    cmd = "ip addr show %s | grep 'inet ' | awk '{print $2}' | cut -d/ -f1" % interface
+    try:
+        output = subprocess.check_output(cmd, shell=True)
+        ip = output.decode('ascii').strip()
+        return ip if ip else None
+    except subprocess.CalledProcessError:
+        return None
 
 def get_network_interface_state(interface):
     if os.path.isfile('/sys/class/net/%s/operstate' % interface):
@@ -85,9 +90,7 @@ def main():
     count = 0
     while True:
 
-        # Draw a black filled box to clear the image.
-        draw.rectangle((0,0,width,height), outline=0, fill=0)
-
+        
         # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
         cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
         CPU = subprocess.check_output(cmd, shell = True )
@@ -99,10 +102,15 @@ def main():
         # Write two lines of text.
         eth0 = str(get_ip_address('eth0'))
         wlan0 = str(get_ip_address('wlan0'))
+        usb0 = str(get_ip_address('usb0'))
+
+
+        # Draw a black filled box to clear the image.
+        draw.rectangle((0,0,width,height), outline=0, fill=0)      
         draw.text((x, top),       "eth0:" + eth0,   font=font, fill=255)
         draw.text((x, top+8),     "wlan0:" + wlan0, font=font, fill=255)
-        draw.text((x, top+16),    str(MemUsage.decode('utf-8')),  font=font, fill=255)
-        draw.text((x, top+25),    str(Disk.decode('utf-8')),  font=font, fill=255)
+        draw.text((x, top+16),    "usb0:" + usb0, font=font, fill=255)
+        #draw.text((x, top+25),    str(Disk.decode('utf-8')),  font=font, fill=255)
 
         # Display image.
         disp.image(image)
